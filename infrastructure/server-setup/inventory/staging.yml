@@ -51,13 +51,13 @@ docker-workers: {}
 
 # For staging server to be able to restore from backups, it needs to have access to the backup server.
 # @todo if you do not intend to set up automatic sync from the backup server, you can remove this section.
-backups:
-  hosts:
-    backup: # @todo set this to be the hostname of your backup server
-      ansible_host: '66.66.66.66' # set this to be the IP address of your backup server
-      # Written by provision pipeline. Assumes "backup" environment
-      # exists in Github environments
-      ansible_ssh_private_key_file: /tmp/backup_ssh_private_key
+# backups:
+#   hosts:
+#     backup: # @todo set this to be the hostname of your backup server
+#       ansible_host: '66.66.66.66' # set this to be the IP address of your backup server
+#       # Written by provision pipeline. Assumes "backup" environment
+#       # exists in Github environments
+#       ansible_ssh_private_key_file: /tmp/backup_ssh_private_key
 # If you are using a jump server to access this environment
 # jump:
 #   hosts:
