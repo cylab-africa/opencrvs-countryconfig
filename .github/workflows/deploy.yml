@@ -1,4 +1,4 @@
-name: Deploy (development)
+name: Deploy (staging)
 #run-name: Deploy to ${{ github.event.inputs.environment }} with reset=${{ github.event.inputs.reset }} core=${{ github.event.inputs.core-image-tag }} country config=${{ github.event.inputs.countryconfig-image-tag }}
 on:
   workflow_dispatch:
@@ -67,6 +67,7 @@ jobs:
         with:
           key: ${{ secrets.SSH_KEY }}
           known_hosts: ${{ env.KNOWN_HOSTS }}
+          if_key_exists: ignore
 
       - name: Unset KNOWN_HOSTS variable
         run: |
