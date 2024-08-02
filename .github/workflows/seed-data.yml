@@ -42,6 +42,16 @@ jobs:
           cd opencrvs-core
           git checkout ${{ github.event.inputs.core-image-tag }}
 
+      - name: Install Node.js and Yarn
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.19.0'  # Use the Node.js version you need
+
+      - name: Run install
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: install # will run `yarn install` command
+
       - name: Install dependencies
         working-directory: ./opencrvs-core
         run: yarn install
