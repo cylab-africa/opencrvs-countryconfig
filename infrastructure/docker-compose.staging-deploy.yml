@@ -182,7 +182,9 @@ services:
     #   - --tls.certificates.stores=default
     #   - --tls.stores.default.defaultcertificate.certfile=/certs/crvs.cm.crt
     #   - --tls.stores.default.defaultcertificate.keyfile=/certs/crvs.cm.key
-
+    environment:
+      - NAMECHEAP_API_KEY=${}
+      - NAMECHEAP_API_USER={}
     command:
       - --certificatesresolvers.certResolver.acme.email=samist.se@gmail.com
       - --certificatesresolvers.certResolver.acme.storage=acme.json
