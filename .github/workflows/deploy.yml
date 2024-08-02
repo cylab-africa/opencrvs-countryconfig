@@ -1,5 +1,5 @@
 name: Deploy (development)
-run-name: Deploy to ${{ github.event.inputs.environment }} with reset=${{ github.event.inputs.reset }} core=${{ github.event.inputs.core-image-tag }} country config=${{ github.event.inputs.countryconfig-image-tag }}
+#run-name: Deploy to ${{ github.event.inputs.environment }} with reset=${{ github.event.inputs.reset }} core=${{ github.event.inputs.core-image-tag }} country config=${{ github.event.inputs.countryconfig-image-tag }}
 on:
   workflow_dispatch:
     inputs:
@@ -26,7 +26,7 @@ on:
 jobs:
   deploy:
     environment: ${{ github.event.inputs.environment }}
-    runs-on: ubuntu-22.04
+    runs-on: upanzi-runner
     outputs:
       outcome: ${{ steps.deploy.outcome }}
     timeout-minutes: 60
