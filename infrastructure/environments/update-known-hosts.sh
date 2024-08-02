@@ -16,7 +16,7 @@ if [ -z "$IP" ]; then
   IP=$DOMAIN
 fi
 
-KNOWN_HOSTS_FILE="infrastructure/known-hosts"
+KNOWN_HOSTS_FILE="/infrastructure/known-hosts"
 
 # Ensure the known-hosts file exist
 touch "$KNOWN_HOSTS_FILE"
