@@ -138,7 +138,7 @@ jobs:
         with:
           key: ${{ secrets.SSH_KEY }}
           known_hosts: ${{ env.KNOWN_HOSTS }}
-          if_key_exists: replace
+          if_key_exists: ignore
 
       - name: Write backup SSH key to file
         if: needs.get-backup-ssh-key.outputs.environment_exists == 'true'
