@@ -184,7 +184,7 @@ services:
     #   - --tls.stores.default.defaultcertificate.keyfile=/certs/crvs.cm.key
 
     command:
-      - --certificatesresolvers.certResolver.acme.email=riku@opencrvs.org
+      - --certificatesresolvers.certResolver.acme.email=samist.se@gmail.com
       - --certificatesresolvers.certResolver.acme.storage=acme.json
       - --certificatesresolvers.certResolver.acme.caserver=https://acme-v02.api.letsencrypt.org/directory
       - --certificatesresolvers.certResolver.acme.httpchallenge.entrypoint=web

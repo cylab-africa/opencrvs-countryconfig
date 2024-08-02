@@ -121,6 +121,8 @@ jobs:
           # @todo @deprecated remove the fallback to secrets.SSH_HOST in OpenCRVS 1.7.0
           manager_production_server_ip: ${{ vars.SSH_HOST || secrets.SSH_HOST }}
           ansible_user: ${{ secrets.SSH_USER }}
+          ssl_crt: ${{ secrets.SSL_CRT }}
+          ssl_key: ${{ secrets.SSL_KEY }}
 
       - name: Read known hosts
         run: |
