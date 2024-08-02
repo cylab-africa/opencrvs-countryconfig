@@ -153,7 +153,7 @@ jobs:
           chmod 600 /tmp/jump_ssh_private_key
 
       - name: Check if backup environment if configured in inventory file
-        if: needs.get-backup-ssh-key.outputs.environment_exists != 'true'
+        if: needs.get-backup-ssh-key.outputs.environment_exists != 'false'
         run: |
           FILE=./${{ github.event.repository.name }}/infrastructure/server-setup/inventory/${{ github.event.inputs.environment }}.yml
           if grep -q '^[[:blank:]]*backups:[[:blank:]]*$' "$FILE"; then
