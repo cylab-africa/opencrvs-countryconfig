@@ -2,10 +2,10 @@ tls:
   stores:
     default:
       defaultCertificate:
-        certFile: /etc/certs/<your combined leaf, intermediate & root, certfile>.crt
-        keyFile: /etc/certs/<your cert private key file>.key
+        certFile: /etc/certs/certificate.crt
+        keyFile: /etc/certs/certificate.key
   certificates:
-    - certFile: /etc/certs/<your combined leaf, intermediate & root, certfile>.crt
-      keyFile: /etc/certs/<your cert private key file>.key
+    - certFile: /etc/certs/certificate.crt
+      keyFile: /etc/certs/certificate.key
       stores:
         - default

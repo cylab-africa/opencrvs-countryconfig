@@ -19,7 +19,7 @@
 
 - name: Create crt file with variable content
   copy:
-    dest: "/data/traefik/certs/cert.crt"
+    dest: "/data/traefik/certs/certificate.crt"
     content: |
       {{ssl_crt}}
     owner: root
@@ -29,7 +29,7 @@
 
 - name: Create key file with variable content
   copy:
-    dest: "/data/traefik/certs/cert.key"
+    dest: "/data/traefik/certs/certificate.key"
     content: |
       {{ssl_key}}
     owner: root

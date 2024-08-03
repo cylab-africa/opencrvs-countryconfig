@@ -12,6 +12,7 @@ build
 .env
 *.log
 .secrets/*
+certificate/*
 # But, keep the .gitignore so the folder is created
 !.secrets/.gitignore
 .idea
