@@ -23,8 +23,9 @@ services:
         mode: host
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /data/traefik/acme.json:/acme.json
+     # - /data/traefik/acme.json:/acme.json
       - /data/traefik/certs:/certs
+      - /opt/opencrvs/infrastructure/traefik/certs.yaml:/etc/traefik/certs.yaml
 
     # environment:
     #   - NAMECHEAP_API_KEY=${}
