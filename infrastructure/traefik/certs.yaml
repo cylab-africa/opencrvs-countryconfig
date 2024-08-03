@@ -2,10 +2,10 @@ tls:
   stores:
     default:
       defaultCertificate:
-        certFile: /etc/certs/certificate.crt
-        keyFile: /etc/certs/certificate.key
+        certFile: /data/traefik/certs/certificate.crt
+        keyFile: /data/traefik/certs/certificate.key
   certificates:
-    - certFile: /etc/certs/certificate.crt
-      keyFile: /etc/certs/certificate.key
+    - certFile: /data/traefik/certs/certificate.crt
+      keyFile: /data/traefik/certs/certificate.key
       stores:
         - default

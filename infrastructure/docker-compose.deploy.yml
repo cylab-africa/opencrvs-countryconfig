@@ -24,6 +24,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /data/traefik/acme.json:/acme.json
+      - /data/traefik/certs:/certs
 
     # environment:
     #   - NAMECHEAP_API_KEY=${}
@@ -37,11 +38,16 @@ services:
       - --api.dashboard=true
       - --api.insecure=true
       - --log.level=WARNING
-      - --certificatesresolvers.certResolver.acme.email=samist.se@gmail.com
-      - --certificatesresolvers.certResolver.acme.storage=acme.json
-      - --certificatesresolvers.certResolver.acme.caserver=https://acme-v02.api.letsencrypt.org/directory
-      - --certificatesresolvers.certResolver.acme.httpchallenge.entrypoint=web
-      - --certificatesresolvers.certResolver.acme.httpchallenge=true
+      # - --certificatesresolvers.certResolver.acme.email=samist.se@gmail.com
+      # - --certificatesresolvers.certResolver.acme.storage=acme.json
+      # - --certificatesresolvers.certResolver.acme.caserver=https://acme-v02.api.letsencrypt.org/directory
+      # - --certificatesresolvers.certResolver.acme.httpchallenge.entrypoint=web
+      # - --certificatesresolvers.certResolver.acme.httpchallenge=true
+      - --tls.certificates.certfile=/certs/certificate.crt
+      - --tls.certificates.keyfile=/certs/certificate.key
+      - --tls.certificates.stores=default
+      - --tls.stores.default.defaultcertificate.certfile=/certs/certificate.crt
+      - --tls.stores.default.defaultcertificate.keyfile=/certs/certificate.key
       - --entrypoints.web.http.redirections.entryPoint.to=websecure
       - --entrypoints.web.http.redirections.entryPoint.scheme=https
       - --entrypoints.web.http.redirections.entrypoint.permanent=true
