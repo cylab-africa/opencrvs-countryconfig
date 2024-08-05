@@ -105,7 +105,7 @@ services:
       # Use HTTP-01 challenge as the web server is publicly available
       # https://doc.traefik.io/traefik/https/acme/#httpchallenge
       # For DNS-01 challenge and manual certificates, check staging and production configurations
-      - --certificatesresolvers.certResolver.acme.email=samist.se@gmail.com
+      - --certificatesresolvers.certResolver.acme.email=gnn@andrew.cmu.edu
       - --certificatesresolvers.certResolver.acme.storage=acme.json
       - --certificatesresolvers.certResolver.acme.caserver=https://acme-v02.api.letsencrypt.org/directory
       - --certificatesresolvers.certResolver.acme.httpchallenge.entrypoint=web

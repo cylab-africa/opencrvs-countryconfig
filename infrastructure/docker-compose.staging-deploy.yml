@@ -182,9 +182,9 @@ services:
     #   - --tls.certificates.stores=default
     #   - --tls.stores.default.defaultcertificate.certfile=/certs/crvs.cm.crt
     #   - --tls.stores.default.defaultcertificate.keyfile=/certs/crvs.cm.key
-    environment:
-      - CF_API_EMAIL=${CF_API_EMAIL}
-      - CF_DNS_API_TOKEN={CF_DNS_API_TOKEN}
+    # environment:
+    #   - CF_API_EMAIL=${CF_API_EMAIL}
+    #   - CF_DNS_API_TOKEN={CF_DNS_API_TOKEN}
     command:
       - --certificatesresolvers.certResolver.acme.email=gnn@andrew.cmu.edu
       - --certificatesresolvers.certResolver.acme.storage=acme.json
