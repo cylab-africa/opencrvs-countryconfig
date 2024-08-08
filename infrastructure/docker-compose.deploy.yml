@@ -25,21 +25,35 @@ services:
 
     environment:
       - CF_API_EMAIL=${CF_API_EMAIL}
-      - CF_DNS_API_TOKEN={CF_DNS_API_TOKEN}
+      - CF_DNS_API_TOKEN=${CF_DNS_API_TOKEN}
       
     command:
       - --entrypoints.web.address=:80
       - --entrypoints.websecure.address=:443
-      - --providers.docker
+      - --providers.docker=true
       - --providers.docker.swarmMode=true
+      - --api=true
       - --api.dashboard=true
       - --api.insecure=true
       - --log.level=WARNING
-      - --certificatesresolvers.certResolver.acme.email=gnn@andrew.cmu.edu
-      - --certificatesresolvers.certResolver.acme.storage=acme.json
-      - --certificatesresolvers.certResolver.acme.caserver=https://acme-v02.api.letsencrypt.org/directory
-      - --certificatesresolvers.certResolver.acme.httpchallenge.entrypoint=web
-      - --certificatesresolvers.certResolver.acme.httpchallenge=true
+      - --certificatesresolvers.letsencrypt.acme.dnschallenge=true
+      - --certificatesresolvers.letsencrypt.acme.dnschallenge.provider=cloudflare
+      - --certificatesresolvers.letsencrypt.acme.email=gnn@andrew.cmu.edu
+      - --certificatesResolvers.letsencrypt.acme.dnschallenge.resolvers=1.1.1.1:53,8.8.8.8:53
+      - --certificatesResolvers.letsencrypt.acme.dnschallenge.delayBeforeCheck=10
+      - --certificatesresolvers.letsencrypt.acme.storage=acme.json
+      - --certificatesresolvers.letsencrypt.acme.caserver=https://acme-v02.api.letsencrypt.org/directory
+
+      - --entrypoints.websecure.http.tls=true
+      - --entrypoints.websecure.http.tls.certResolver=letsencrypt
+      - --entrypoints.websecure.http.tls.domains[0].main=opencrvs.mosipcmuafrica.me
+      - --entrypoints.websecure.http.tls.domains[0].sans=*.opencrvs.mosipcmuafrica.me
+
+      # - --certificatesresolvers.certResolver.acme.email=gnn@andrew.cmu.edu
+      # - --certificatesresolvers.certResolver.acme.storage=acme.json
+      # - --certificatesresolvers.certResolver.acme.caserver=https://acme-v02.api.letsencrypt.org/directory
+      # - --certificatesresolvers.certResolver.acme.httpchallenge.entrypoint=web
+      # - --certificatesresolvers.certResolver.acme.httpchallenge=true
       - --entrypoints.web.http.redirections.entryPoint.to=websecure
       - --entrypoints.web.http.redirections.entryPoint.scheme=https
       - --entrypoints.web.http.redirections.entrypoint.permanent=true
@@ -169,7 +183,7 @@ services:
         - 'traefik.http.routers.kibana.rule=Host(`kibana.{{hostname}}`)'
         - 'traefik.http.services.kibana.loadbalancer.server.port=5601'
         - 'traefik.http.routers.kibana.tls=true'
-        - 'traefik.http.routers.kibana.tls.certresolver=certResolver'
+        - 'traefik.http.routers.kibana.tls.certResolver=letsencrypt'
         - 'traefik.http.routers.kibana.entrypoints=web,websecure'
         - 'traefik.docker.network=opencrvs_overlay_net'
         - 'traefik.http.middlewares.traefik.headers.stsseconds=31536000'
@@ -321,13 +335,13 @@ services:
         # Console
         - 'traefik.http.routers.minio-console.rule=Host(`minio-console.{{hostname}}`)'
         - 'traefik.http.routers.minio-console.entrypoints=websecure'
-        - 'traefik.http.routers.minio-console.tls.certresolver=certResolver'
+        - 'traefik.http.routers.minio-console.tls.certResolver=letsencrypt'
         - 'traefik.http.routers.minio-console.service=minio-console'
         - 'traefik.http.services.minio-console.loadbalancer.server.port=9001'
         # API
         - 'traefik.http.routers.minio.rule=Host(`minio.{{hostname}}`)'
         - 'traefik.http.routers.minio.entrypoints=websecure,web'
-        - 'traefik.http.routers.minio.tls.certresolver=certResolver'
+        - 'traefik.http.routers.minio.tls.certResolver=letsencrypt'
         - 'traefik.http.routers.minio.tls=true'
         - 'traefik.http.routers.minio.service=minio'
         - 'traefik.http.routers.minio.middlewares=minio-https-redirect'
@@ -506,7 +520,7 @@ services:
         - 'traefik.http.routers.client.service=client'
         - 'traefik.http.services.client.loadbalancer.server.port=80'
         - 'traefik.http.routers.client.tls=true'
-        - 'traefik.http.routers.client.tls.certresolver=certResolver'
+        - 'traefik.http.routers.client.tls.certResolver=letsencrypt'
         - 'traefik.http.routers.client.entrypoints=web,websecure'
         - 'traefik.docker.network=opencrvs_overlay_net'
 
@@ -536,7 +550,7 @@ services:
         - 'traefik.http.routers.components.rule=Host(`ui-kit.{{hostname}}`)'
         - 'traefik.http.services.components.loadbalancer.server.port=80'
         - 'traefik.http.routers.components.tls=true'
-        - 'traefik.http.routers.components.tls.certresolver=certResolver'
+        - 'traefik.http.routers.components.tls.certResolver=letsencrypt'
         - 'traefik.http.routers.components.entrypoints=web,websecure'
         - 'traefik.docker.network=opencrvs_overlay_net'
         - 'traefik.http.middlewares.components.headers.customresponseheaders.Pragma=no-cache'
@@ -561,7 +575,7 @@ services:
         - 'traefik.http.routers.countryconfig.rule=Host(`countryconfig.{{hostname}}`) && !Path(`/email`) && !Path(`/notification`) && !Path(`/dashboards/queries.json`)'
         - 'traefik.http.services.countryconfig.loadbalancer.server.port=3040'
         - 'traefik.http.routers.countryconfig.tls=true'
-        - 'traefik.http.routers.countryconfig.tls.certresolver=certResolver'
+        - 'traefik.http.routers.countryconfig.tls.certResolver=letsencrypt'
         - 'traefik.http.routers.countryconfig.entrypoints=web,websecure'
         - 'traefik.http.routers.countryconfig.middlewares=gzip-compression'
         - 'traefik.docker.network=opencrvs_overlay_net'
@@ -621,7 +635,7 @@ services:
         - 'traefik.http.routers.login.rule=Host(`login.{{hostname}}`)'
         - 'traefik.http.services.login.loadbalancer.server.port=80'
         - 'traefik.http.routers.login.tls=true'
-        - 'traefik.http.routers.login.tls.certresolver=certResolver'
+        - 'traefik.http.routers.login.tls.certResolver=letsencrypt'
         - 'traefik.http.routers.login.entrypoints=web,websecure'
         - 'traefik.http.routers.login.middlewares=gzip-compression'
         - 'traefik.docker.network=opencrvs_overlay_net'
@@ -660,7 +674,7 @@ services:
         - 'traefik.http.routers.auth.rule=Host(`auth.{{hostname}}`)'
         - 'traefik.http.services.auth.loadbalancer.server.port=4040'
         - 'traefik.http.routers.auth.tls=true'
-        - 'traefik.http.routers.auth.tls.certresolver=certResolver'
+        - 'traefik.http.routers.auth.tls.certResolver=letsencrypt'
         - 'traefik.http.routers.auth.entrypoints=web,websecure'
         - 'traefik.docker.network=opencrvs_overlay_net'
         - 'traefik.http.middlewares.auth.headers.customresponseheaders.Pragma=no-cache'
@@ -737,7 +751,7 @@ services:
         - 'traefik.http.routers.gateway.rule=Host(`gateway.{{hostname}}`)'
         - 'traefik.http.services.gateway.loadbalancer.server.port=7070'
         - 'traefik.http.routers.gateway.tls=true'
-        - 'traefik.http.routers.gateway.tls.certresolver=certResolver'
+        - 'traefik.http.routers.gateway.tls.certResolver=letsencrypt'
         - 'traefik.http.routers.gateway.entrypoints=web,websecure'
         - 'traefik.http.routers.gateway.middlewares=gzip-compression'
         - 'traefik.docker.network=opencrvs_overlay_net'
@@ -880,7 +894,7 @@ services:
         - 'traefik.http.routers.config.rule=Host(`config.{{hostname}}`)'
         - 'traefik.http.services.config.loadbalancer.server.port=2021'
         - 'traefik.http.routers.config.tls=true'
-        - 'traefik.http.routers.config.tls.certresolver=certResolver'
+        - 'traefik.http.routers.config.tls.certResolver=letsencrypt'
         - 'traefik.http.routers.config.entrypoints=web,websecure'
         - 'traefik.docker.network=opencrvs_overlay_net'
         - 'traefik.http.middlewares.config.headers.customresponseheaders.Pragma=no-cache'
@@ -963,7 +977,7 @@ services:
         - 'traefik.http.routers.webhooks.rule=Host(`webhooks.{{hostname}}`)'
         - 'traefik.http.services.webhooks.loadbalancer.server.port=2525'
         - 'traefik.http.routers.webhooks.tls=true'
-        - 'traefik.http.routers.webhooks.tls.certresolver=certResolver'
+        - 'traefik.http.routers.webhooks.tls.certResolver=letsencrypt'
         - 'traefik.http.routers.webhooks.entrypoints=web,websecure'
         - 'traefik.docker.network=opencrvs_overlay_net'
         - 'traefik.http.middlewares.webhooks.headers.customresponseheaders.Pragma=no-cache'
@@ -1009,7 +1023,7 @@ services:
         - 'traefik.http.routers.metabase.rule=Host(`metabase.{{hostname}}`)'
         - 'traefik.http.services.metabase.loadbalancer.server.port=4444'
         - 'traefik.http.routers.metabase.tls=true'
-        - 'traefik.http.routers.metabase.tls.certresolver=certResolver'
+        - 'traefik.http.routers.metabase.tls.certResolver=letsencrypt'
         - 'traefik.http.routers.metabase.entrypoints=web,websecure'
         - 'traefik.docker.network=opencrvs_overlay_net'
         - 'traefik.http.middlewares.metabase.headers.customresponseheaders.Pragma=no-cache'

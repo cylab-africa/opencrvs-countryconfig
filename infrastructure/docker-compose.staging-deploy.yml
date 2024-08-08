@@ -185,18 +185,41 @@ services:
     # environment:
     #   - CF_API_EMAIL=${CF_API_EMAIL}
     #   - CF_DNS_API_TOKEN={CF_DNS_API_TOKEN}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /data/traefik/acme.json:/acme.json
+    environment:
+      - CF_API_EMAIL=${CF_API_EMAIL}
+      - CF_DNS_API_TOKEN=${CF_DNS_API_TOKEN}
     command:
-      - --certificatesresolvers.certResolver.acme.email=gnn@andrew.cmu.edu
-      - --certificatesresolvers.certResolver.acme.storage=acme.json
-      - --certificatesresolvers.certResolver.acme.caserver=https://acme-v02.api.letsencrypt.org/directory
-      - --certificatesresolvers.certResolver.acme.httpchallenge.entrypoint=web
-      - --certificatesresolvers.certResolver.acme.httpchallenge=true
+      # - --certificatesresolvers.certResolver.acme.email=gnn@andrew.cmu.edu
+      # - --certificatesresolvers.certResolver.acme.storage=acme.json
+      # - --certificatesresolvers.certResolver.acme.caserver=https://acme-v02.api.letsencrypt.org/directory
+      # - --certificatesresolvers.certResolver.acme.httpchallenge.entrypoint=web
+      # - --certificatesresolvers.certResolver.acme.httpchallenge=true
+
+      - --certificatesresolvers.letsencrypt.acme.dnschallenge=true
+      - --certificatesresolvers.letsencrypt.acme.dnschallenge.provider=cloudflare
+      - --certificatesresolvers.letsencrypt.acme.email=gnn@andrew.cmu.edu
+      - --certificatesResolvers.letsencrypt.acme.dnschallenge.resolvers=1.1.1.1:53,8.8.8.8:53
+      - --certificatesResolvers.letsencrypt.acme.dnschallenge.delayBeforeCheck=10
+      - --certificatesresolvers.letsencrypt.acme.storage=acme.json
+      - --certificatesresolvers.letsencrypt.acme.caserver=https://acme-v02.api.letsencrypt.org/directory
+
+      - --entrypoints.websecure.http.tls=true
+      - --entrypoints.websecure.http.tls.certResolver=letsencrypt
+      - --entrypoints.websecure.http.tls.domains[0].main=opencrvs.mosipcmuafrica.me
+      - --entrypoints.websecure.http.tls.domains[0].sans=*.opencrvs.mosipcmuafrica.me
+      
+      
+
 
       - --entrypoints.web.address=:80
       - --entrypoints.websecure.address=:443
-      - --providers.docker
+      - --providers.docker=true
       - --providers.docker.swarmMode=true
       - --api.dashboard=true
+      - --api=true
       - --api.insecure=true
       - --log.level=WARNING
       - --entrypoints.web.http.redirections.entryPoint.to=websecure
