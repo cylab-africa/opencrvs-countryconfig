@@ -5,6 +5,7 @@
 # Before you deploy staging or production environments, make sure the application servers are
 # either in an internal network or protected with a firewall. No ports should be exposed to the internet.
 #
+version: "3.3"
 
 services:
   gateway:
