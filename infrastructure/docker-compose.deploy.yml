@@ -44,6 +44,7 @@ services:
       - --certificatesResolvers.letsencrypt.acme.dnschallenge.delayBeforeCheck=10
       - --certificatesresolvers.letsencrypt.acme.storage=/acme.json
       - --certificatesresolvers.letsencrypt.acme.caserver=https://acme-v02.api.letsencrypt.org/directory
+      - --entrypoints.websecure.http.middlewares=secure-headers@file,compress-with-gzip@file
       - --entrypoints.websecure.http.tls=true
       - --entrypoints.websecure.http.tls.certResolver=letsencrypt
       - --entrypoints.websecure.http.tls.domains[0].main=opencrvs.mosipcmuafrica.me
@@ -60,7 +61,7 @@ services:
       replicas: 1
       labels:
         - 'traefik.http.services.traefik.loadbalancer.server.port=80'
-        - 'traefik.http.middlewares.gzip-compression.compress=true'
+        # - 'traefik.http.middlewares.gzip-compression.compress=true'
       placement:
         constraints:
           - node.role == manager
