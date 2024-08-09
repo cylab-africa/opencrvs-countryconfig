@@ -26,7 +26,7 @@ on:
 jobs:
   deploy:
     environment: ${{ github.event.inputs.environment }}
-    runs-on: opencrvs-runner-upanzi
+    runs-on: opencrvs-runner
     outputs:
       outcome: ${{ steps.deploy.outcome }}
     timeout-minutes: 60

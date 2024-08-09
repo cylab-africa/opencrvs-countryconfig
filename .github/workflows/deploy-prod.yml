@@ -22,7 +22,7 @@ on:
 jobs:
   deploy:
     environment: ${{ github.event.inputs.environment }}
-    runs-on: opencrvs-runner-upanzi
+    runs-on: opencrvs-runner
     timeout-minutes: 60
     steps:
       - uses: trstringer/manual-approval@v1
