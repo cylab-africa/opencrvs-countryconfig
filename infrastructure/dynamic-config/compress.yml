@@ -1,4 +1,0 @@
-http:
-  middlewares:
-    compress-with-gzip:
-      compress: {}
