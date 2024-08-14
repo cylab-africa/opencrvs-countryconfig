@@ -9,13 +9,13 @@
 name: 'alert'
 type: 'frequency'
 index: 'kibana-alert-history-default'
-is_enabled: true
+is_enabled: false       #this was changed to false to disable the alert
 num_events: 1
 realert:
-  minutes: 5
+  minutes: 600        #this was initially 5, but changed to 600 to reduce frequency
 terms_size: 50
 timeframe:
-  minutes: 5
+  minutes: 600        #changed from 5 as well
 timestamp_field: '@timestamp'
 timestamp_type: 'iso'
 use_strftime_index: false

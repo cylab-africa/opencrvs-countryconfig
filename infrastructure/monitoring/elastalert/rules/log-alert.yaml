@@ -9,13 +9,13 @@
 name: 'log-alert'
 type: 'frequency'
 index: 'kibana-alert-history-default'
-is_enabled: true
+is_enabled: false
 num_events: 1
 realert:
-  minutes: 5
+  minutes: 600
 terms_size: 50
 timeframe:
-  minutes: 5
+  minutes: 600
 timestamp_field: '@timestamp'
 timestamp_type: 'iso'
 use_strftime_index: false
