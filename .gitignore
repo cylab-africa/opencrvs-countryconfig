@@ -6,6 +6,7 @@ package-lock.json
 
 # production
 build
+.vscode
 
 # misc
 .DS_Store
